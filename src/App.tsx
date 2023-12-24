@@ -1,4 +1,3 @@
-import "./App.css";
 import StudentForm from "./component/StudentForm";
 import StudentTable from "./component/StudentTable";
 

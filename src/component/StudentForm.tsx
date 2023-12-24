@@ -1,15 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { initialize } from "workbox-google-analytics";
-
-interface StudentFormProps {
-  initialValues?: {
-    id?: number;
-    firstName?: string;
-    lastName?: string;
-    faculty?: string;
-    phone?: string;
-  };
-}
+import React from "react";
 
 const faculties = [
   "Engineering",
@@ -19,73 +8,47 @@ const faculties = [
   "Medicine",
   "Architecture",
 ];
-
-function StudentForm({ initialValues }: StudentFormProps) {
-  const [formValues, setFormValues] = useState({
-    id: initialValues?.id || "",
-    firstName: initialValues?.firstName || "",
-    lastName: initialValues?.lastName || "",
-    faculty: initialValues?.faculty || "",
-    phone: initialValues?.phone || "",
-  });
-
-  useEffect(() => {
-    console.log("Received initialValues:", initialValues);
-    console.log("form value:",formValues);
-    setFormValues({
-      id: initialValues?.id || "",
-      firstName: initialValues?.firstName || "",
-      lastName: initialValues?.lastName || "",
-      faculty: initialValues?.faculty || "",
-      phone: initialValues?.phone || "",
-    });
-  }, [initialValues]);
-
-  
+function StudentForm() {
   return (
     <div>
       <div className="text-3xl font-bold ">Student Form</div>
       <form className="flex flex-col">
-        <div id="studentID" className="flex flex-row mb-2">
-          <label htmlFor="id" className="px-3 py-2">
+        <div className="flex flex-row mb-2">
+          <label htmlFor="sid" className="px-3 py-2">
             Student ID:{" "}
           </label>
           <input
             type="number"
-            name="=id"
-            value={formValues.id}
+            name="sid"
             className="border rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
-        <div id="fname" className="flex flex-row mb-2">
-          <label htmlFor="fName" className="px-3 py-2">
-            First Name:{" "}
+        <div className="flex flex-row mb-2">
+          <label htmlFor="Name" className="px-3 py-2">
+            Name:{" "}
           </label>
           <input
             type="text"
-            name="fName"
-            value={formValues.firstName}
+            name="Name"
             className="border rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
-        <div id="lname" className="flex flex-row mb-2">
-          <label htmlFor="lname" className="px-3 py-2">
-             Last name:{" "}
+        <div className="flex flex-row mb-2">
+          <label htmlFor="SName" className="px-3 py-2">
+            Surname:{" "}
           </label>
           <input
             type="text"
             name="SName"
-            value={formValues.lastName}
             className="px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
-        <div id="faculty" className="flex flex-row">
+        <div className="flex flex-row">
           <label htmlFor="faculty" className="px-3 py-2">
             Faculty:{" "}
           </label>
           <select
             name="faculty"
-            value={formValues.faculty}
             className="px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
             required
           >
@@ -99,17 +62,14 @@ function StudentForm({ initialValues }: StudentFormProps) {
             ))}
           </select>
         </div>
-        <div id="phone-number" className="flex flex-row my-2">
-          <label htmlFor="phone" className="px-3 py-2">
-            Telephone:{" "}
-          </label>
+        <div className="flex flex-row my-2">
+          <label htmlFor="tele" className="px-3 py-2">Telephone: </label>
           <input
             type="tel"
-            name="phone"
+            name="tele"
             pattern="[0-9]{3}[0-9]{3}[0-9]{4}"
             placeholder="0XXXXXXXXX"
             title="please fill in specified format"
-            value={formValues.phone}
             className="px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
           ></input>
         </div>
