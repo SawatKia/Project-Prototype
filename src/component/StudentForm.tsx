@@ -16,13 +16,13 @@ const faculties = [
   "ครุศาสตร์",
   "แพทย์ศาสตร์",
   "สถาปัตยกรรมศาสตร์",
-  "คณะเทคโนโลยีสารสนเทศฯ",
-  "คณะศิลปกรรมศาสตร์",
-  "คณะบัญชี",
-  "คณะนิติศาสตร์",
-  "คณะเศรษฐศาสตร์",
-  "คณะอักษรศาสตร์",
-  "คณะนิเทศศาสตร์",
+  "เทคโนโลยีสารสนเทศฯ",
+  "ศิลปกรรมศาสตร์",
+  "บัญชี",
+  "นิติศาสตร์",
+  "เศรษฐศาสตร์",
+  "อักษรศาสตร์",
+  "นิเทศศาสตร์",
 ];
 function StudentForm({ initialValues }: StudentFormProps) {
   const [formValues, setFormValues] = useState({
@@ -100,6 +100,7 @@ function StudentForm({ initialValues }: StudentFormProps) {
           </label>
           <select
             name="faculty"
+            value={formValues.faculty}
             className="px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
             required
           >
