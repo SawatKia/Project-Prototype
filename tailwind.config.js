@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontfamily: {
-        "Noto-sans-Thai": ["Noto Sans Thai", "sans-serif"],
+        "Kanit": ["Kanit", "sans-serif"],
       },
     },
     plugins: [],

@@ -10,12 +10,19 @@ interface StudentFormProps {
 }
 
 const faculties = [
-  "Engineering",
-  "Science",
-  "Business",
-  "Education",
-  "Medicine",
-  "Architecture",
+  "วิศวกรรมศาสตร์",
+  "วิทยาศาสตร์",
+  "บริหารธุรกิจ",
+  "ครุศาสตร์",
+  "แพทย์ศาสตร์",
+  "สถาปัตยกรรมศาสตร์",
+  "คณะเทคโนโลยีสารสนเทศฯ",
+  "คณะศิลปกรรมศาสตร์",
+  "คณะบัญชี",
+  "คณะนิติศาสตร์",
+  "คณะเศรษฐศาสตร์",
+  "คณะอักษรศาสตร์",
+  "คณะนิเทศศาสตร์",
 ];
 function StudentForm({ initialValues }: StudentFormProps) {
   const [formValues, setFormValues] = useState({
@@ -38,10 +45,20 @@ function StudentForm({ initialValues }: StudentFormProps) {
     });
   }, [initialValues]);
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Add logic to handle form submission, e.g., sending data to the server
+    console.log("Form submitted:", formValues);
+  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+  };
+
   return (
     <div>
       <div className="text-3xl font-bold ">Student Form</div>
-      <form className="flex flex-col">
+      <form className="flex flex-col" onSubmit={handleSubmit}>
         <div id="studentID" className="flex flex-row mb-2">
           <label htmlFor="id" className="px-3 py-2">
             Student ID:{" "}
@@ -49,11 +66,12 @@ function StudentForm({ initialValues }: StudentFormProps) {
           <input
             type="number"
             name="id"
+            onChange={handleChange}
             value={formValues.id}
             className="border rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
-        <div id="fname" className="flex flex-row mb-2">
+        <div id="fName" className="flex flex-row mb-2">
           <label htmlFor="fName" className="px-3 py-2">
             First Name:{" "}
           </label>
@@ -64,8 +82,8 @@ function StudentForm({ initialValues }: StudentFormProps) {
             className="border rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
-        <div id="lname" className="flex flex-row mb-2">
-          <label htmlFor="lname" className="px-3 py-2">
+        <div id="lName" className="flex flex-row mb-2">
+          <label htmlFor="lName" className="px-3 py-2">
              Last name:{" "}
           </label>
           <input

@@ -69,7 +69,7 @@ function StudentTable() {
   return (
     <div>
       StudentTable
-      <table className="w-full text-sm text-left">
+      <table className="w-full text-sm text-left ">
         <thead className="text-gray-700 uppercase bg-gray-50">
           <th className="px-6 py-3">Student id</th>
           <th className="px-6 py-3">First name</th>
@@ -82,7 +82,7 @@ function StudentTable() {
           {students.map((S, index) => (
             <tr
               key={index}
-              className="odd:bg-white  even:bg-gray-100  border-b-2 dark:border-gray-700"
+              className="odd:bg-white even:bg-gray-100 border-b-2 dark:border-gray-700"
             >
               <td className="px-8 py-3">{S.id}</td>
               <td className="px-20 py-3">{S.firstName}</td>
