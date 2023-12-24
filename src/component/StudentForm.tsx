@@ -46,7 +46,6 @@ function StudentForm({ initialValues }: StudentFormProps) {
   }, [initialValues]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
     // Add logic to handle form submission, e.g., sending data to the server
     console.log("Form submitted:", formValues);
   };
@@ -72,23 +71,25 @@ function StudentForm({ initialValues }: StudentFormProps) {
           />
         </div>
         <div id="fName" className="flex flex-row mb-2">
-          <label htmlFor="fName" className="px-3 py-2">
+          <label htmlFor="firstName" className="px-3 py-2">
             First Name:{" "}
           </label>
           <input
             type="text"
-            name="fName"
+            name="firstName"
+            onChange={handleChange}
             value={formValues.firstName}
             className="border rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
         <div id="lName" className="flex flex-row mb-2">
-          <label htmlFor="lName" className="px-3 py-2">
+          <label htmlFor="lastName" className="px-3 py-2">
              Last name:{" "}
           </label>
           <input
             type="text"
-            name="lName"
+            name="lastName"
+            onChange={handleChange}
             value={formValues.lastName}
             className="px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
           />
@@ -121,6 +122,7 @@ function StudentForm({ initialValues }: StudentFormProps) {
             name="phone"
             pattern="[0-9]{3}[0-9]{3}[0-9]{4}"
             placeholder="0XXXXXXXXX"
+            onChange={handleChange}
             value={formValues.phone}
             title="please fill in specified format"
             className="px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
