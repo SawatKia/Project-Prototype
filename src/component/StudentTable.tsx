@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import StudentForm from "./StudentForm";
-
+import Axios, { AxiosResponse } from "axios";
 interface Student {
     name: string;
     address: string;
     phone?: string; // Assuming phone is optional
   }
+
+const apiURL ="https://us-central1-crud-testing-2b311.cloudfunctions.net/app/api/getAll";
 
 function StudentTable() {
   const students:Student[] = [
@@ -35,6 +37,11 @@ function StudentTable() {
       phone: "0613015086",
     },
   ];
+  const [firebase, setFirebase] = useState<Partial<{
+    name?: string;
+    address?: string;
+    phone?: string;
+  }>>({}); // Initialize as an empty object
   const [editStudent, setEditStudent] = useState(false);
   const [selectStudent, setSelectStudent] = useState<Partial<{
     name?: string;
@@ -49,7 +56,16 @@ function StudentTable() {
   };
 
   useEffect(() => {
+    Axios.get(apiURL).then((responds: AxiosResponse<{}>) => {
+      Axios.get(apiURL).then((response: AxiosResponse<any>) => {
+        setFirebase(responds.data);
+        console.log("data from firebase: ", firebase);
+      }).catch(error => {
+        console.error("Error fetching data:", error);
+      });
+    })
     console.log("selected student:", selectStudent);
+    
   }, [selectStudent]); // This useEffect runs whenever selectStudent changes
 
   return (
