@@ -4,7 +4,7 @@ import StudentTable from "./component/StudentTable";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App font-['Kanit']">
       <StudentForm/>
       <StudentTable/>
     </div>

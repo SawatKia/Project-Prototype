@@ -1,74 +1,101 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+interface StudentFormProps {
+  initialValues?: {
+    name?: string;
+    address?: string;
+    phone?: string;
+  };
+}
 
 const faculties = [
-  "Engineering",
-  "Science",
-  "Business",
-  "Education",
-  "Medicine",
-  "Architecture",
+  "วิศวกรรมศาสตร์",
+  "วิทยาศาสตร์",
+  "บริหารธุรกิจ",
+  "ครุศาสตร์",
+  "แพทย์ศาสตร์",
+  "สถาปัตยกรรมศาสตร์",
+  "เทคโนโลยีสารสนเทศฯ",
+  "ศิลปกรรมศาสตร์",
+  "บัญชี",
+  "นิติศาสตร์",
+  "เศรษฐศาสตร์",
+  "อักษรศาสตร์",
+  "นิเทศศาสตร์",
 ];
-function StudentForm() {
+function StudentForm({ initialValues }: StudentFormProps) {
+  const [formValues, setFormValues] = useState({
+    name: initialValues?.name || "",
+    address: initialValues?.address || "",
+    phone: initialValues?.phone || "",
+  });
+
+  useEffect(() => {
+    console.log("Received initialValues:", initialValues);
+    console.log("form value:",formValues);
+    setFormValues({
+      name: initialValues?.name || "",
+      address: initialValues?.address || "",
+      phone: initialValues?.phone || "",
+    });
+  }, [initialValues]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Add logic to handle form submission, e.g., sending data to the server
+    console.log("Form submitted:", formValues);
+  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+  };
+
   return (
     <div>
       <div className="text-3xl font-bold ">Student Form</div>
-      <form className="flex flex-col">
-        <div className="flex flex-row mb-2">
-          <label htmlFor="sid" className="px-3 py-2">
-            Student ID:{" "}
-          </label>
-          <input
-            type="number"
-            name="sid"
-            className="border rounded-md focus:outline-none focus:border-blue-500"
-          />
-        </div>
-        <div className="flex flex-row mb-2">
-          <label htmlFor="Name" className="px-3 py-2">
+      <form className="flex flex-col" onSubmit={handleSubmit}>
+        <div id="fName" className="flex flex-row mb-2">
+          <label htmlFor="name" className="px-3 py-2">
             Name:{" "}
           </label>
           <input
             type="text"
-            name="Name"
+            name="name"
+            onChange={handleChange}
+            value={formValues.name}
             className="border rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
-        <div className="flex flex-row mb-2">
-          <label htmlFor="SName" className="px-3 py-2">
-            Surname:{" "}
-          </label>
-          <input
-            type="text"
-            name="SName"
-            className="px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-          />
-        </div>
-        <div className="flex flex-row">
-          <label htmlFor="faculty" className="px-3 py-2">
-            Faculty:{" "}
+        <div id="address" className="flex flex-row">
+          <label htmlFor="address" className="px-3 py-2">
+            address:{" "}
           </label>
           <select
-            name="faculty"
+            name="address"
+            value={formValues.address}
             className="px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
             required
           >
             <option value="" disabled>
-              Select Faculty
+              Select address
             </option>
-            {faculties.map((faculty, index) => (
-              <option key={index} value={faculty}>
-                {faculty}
+            {faculties.map((address, index) => (
+              <option key={index} value={address}>
+                {address}
               </option>
             ))}
           </select>
         </div>
-        <div className="flex flex-row my-2">
-          <label htmlFor="tele" className="px-3 py-2">Telephone: </label>
+        <div id="phone-number" className="flex flex-row my-2">
+          <label htmlFor="phone" className="px-3 py-2">
+            Telephone:{" "}
+          </label>
           <input
             type="tel"
-            name="tele"
+            name="phone"
             pattern="[0-9]{3}[0-9]{3}[0-9]{4}"
             placeholder="0XXXXXXXXX"
+            onChange={handleChange}
+            value={formValues.phone}
             title="please fill in specified format"
             className="px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
           ></input>
