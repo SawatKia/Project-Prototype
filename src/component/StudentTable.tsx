@@ -2,62 +2,48 @@ import React, { useState, useEffect } from "react";
 import StudentForm from "./StudentForm";
 
 interface Student {
-    id: number;
-    firstName: string;
-    lastName: string;
-    faculty: string;
+    name: string;
+    address: string;
     phone?: string; // Assuming phone is optional
   }
 
 function StudentTable() {
   const students:Student[] = [
     {
-      id: 61011085,
-      firstName: "สวรรษ",
-      lastName: "ลาภประเสริฐล้ำ",
-      faculty: "วิศวกรรมศาสตร์",
+      name: "สวรรษ",
+      address: "วิศวกรรมศาสตร์",
       phone: "0982624677",
     },
     {
-      id: 61011086,
-      firstName: "ณัฐกนก",
-      lastName: "ทวีศิริ",
-      faculty: "วิทยาศาสตร์",
+      name: "ณัฐกนก",
+      address: "วิทยาศาสตร์",
       phone: "0817108791",
     },
     {
-      id: 61011087,
-      firstName: "กัญญ์ภัค",
-      lastName: "วงศ์สายชล",
-      faculty: "บริหารธุรกิจ",
+      name: "กัญญ์ภัค",
+      address: "บริหารธุรกิจ",
       phone: "0879376381",
     },
     {
-      id: 61011088,
-      firstName: "ธนพล",
-      lastName: "แก้วมณี",
-      faculty: "เทคโนโลยีสารสนเทศฯ",
+      name: "ธนพล",
+      address: "เทคโนโลยีสารสนเทศฯ",
       phone: "0624581365",
     },
     {
-      id: 61011089,
-      firstName: "นฤวรรณ",
-      lastName: "สังข์ทอง",
-      faculty: "อักษรศาสตร์",
+      name: "นฤวรรณ",
+      address: "อักษรศาสตร์",
       phone: "0613015086",
     },
   ];
   const [editStudent, setEditStudent] = useState(false);
   const [selectStudent, setSelectStudent] = useState<Partial<{
-    id?: number;
-    firstName?: string;
-    lastName?: string;
-    faculty?: string;
+    name?: string;
+    address?: string;
     phone?: string;
   }>>({}); // Initialize as an empty object
 
   const handleEditClick = (student: Student) => {
-    console.log("edit clicked on ID :" + student.id);
+    console.log("edit clicked on ID :" + student.address);
     setEditStudent(true);
     setSelectStudent(student);
   };
@@ -71,10 +57,8 @@ function StudentTable() {
       StudentTable
       <table className="w-full text-sm text-left ">
         <thead className="text-gray-700 uppercase bg-gray-50">
-          <th className="px-6 py-3">Student id</th>
-          <th className="px-6 py-3">First name</th>
-          <th className="px-6 py-3">last Name</th>
-          <th className="px-6 py-3">Faculty</th>
+          <th className="px-6 py-3">name</th>
+          <th className="px-6 py-3">address</th>
           <th className="px-6 py-3">Phone number</th>
           <th className="px-6 py-3">Action</th>
         </thead>
@@ -84,10 +68,8 @@ function StudentTable() {
               key={index}
               className="odd:bg-white even:bg-gray-100 border-b-2 dark:border-gray-700"
             >
-              <td className="px-8 py-3">{S.id}</td>
-              <td className="px-20 py-3">{S.firstName}</td>
-              <td className="px-10 py-3">{S.lastName}</td>
-              <td className="px-4 py-3">{S.faculty}</td>
+              <td className="px-2 py-3">{S.name}</td>
+              <td className="px-4 py-3">{S.address}</td>
               <td className="px-12 py-3">{S.phone}</td>
               <td className="px-8 py-3 flex flex-row ">
                 <button
