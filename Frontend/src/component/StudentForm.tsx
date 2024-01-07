@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 interface StudentFormProps {
-  initialValues?: {
-    name?: string;
-    address?: string;
-    phone?: string;
+  initialValues: {
+    name: string;
+    address: string;
+    mobile: string;
   };
 }
-
 const faculties = [
   "วิศวกรรมศาสตร์",
   "วิทยาศาสตร์",
@@ -26,7 +25,7 @@ function StudentForm({ initialValues }: StudentFormProps) {
   const [formValues, setFormValues] = useState({
     name: initialValues?.name || "",
     address: initialValues?.address || "",
-    phone: initialValues?.phone || "",
+    mobile: initialValues?.mobile || "",
   });
 
   useEffect(() => {
@@ -35,7 +34,7 @@ function StudentForm({ initialValues }: StudentFormProps) {
     setFormValues({
       name: initialValues?.name || "",
       address: initialValues?.address || "",
-      phone: initialValues?.phone || "",
+      mobile: initialValues?.mobile || "",
     });
   }, [initialValues]);
 
@@ -85,17 +84,17 @@ function StudentForm({ initialValues }: StudentFormProps) {
             ))}
           </select>
         </div>
-        <div id="phone-number" className="flex flex-row my-2">
-          <label htmlFor="phone" className="px-3 py-2">
-            Telephone:{" "}
+        <div id="mobile-number" className="flex flex-row my-2">
+          <label htmlFor="mobile" className="px-3 py-2">
+            Telemobile:{" "}
           </label>
           <input
             type="tel"
-            name="phone"
+            name="mobile"
             pattern="[0-9]{3}[0-9]{3}[0-9]{4}"
             placeholder="0XXXXXXXXX"
             onChange={handleChange}
-            value={formValues.phone}
+            value={formValues.mobile}
             title="please fill in specified format"
             className="px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
           ></input>
