@@ -4,9 +4,9 @@ import StudentTable from "./component/StudentTable";
 
 function App() {
   return (
-    <div className="App">
-      <StudentForm/>
-      <StudentTable/>
+    <div className="App font-['Kanit']">
+      <StudentForm initialValues={{ name: '', address: '', mobile: '' }} />
+      <StudentTable />
     </div>
   );
 }
