@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import logo from "../image/logo.png";
 interface StudentFormProps {
   initialValues: {
     name: string;
@@ -30,7 +31,7 @@ function StudentForm({ initialValues }: StudentFormProps) {
 
   useEffect(() => {
     console.log("Received initialValues:", initialValues);
-    console.log("form value:",formValues);
+    console.log("form value:", formValues);
     setFormValues({
       name: initialValues?.name || "",
       address: initialValues?.address || "",
@@ -43,13 +44,18 @@ function StudentForm({ initialValues }: StudentFormProps) {
     // Add logic to handle form submission, e.g., sending data to the server
     console.log("Form submitted:", formValues);
   };
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
   return (
     <div>
+      <div className="flex justify-center mt-4 mb-4">
+        <img src={logo} alt="logo" width={120} height={120} />
+      </div>
       <div className="text-3xl font-bold ">Student Form</div>
       <form className="flex flex-col" onSubmit={handleSubmit}>
         <div id="fName" className="flex flex-row mb-2">
