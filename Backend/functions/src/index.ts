@@ -17,6 +17,12 @@ app.get("/", (req: Request, res: Response) => {
     message: "You are now connected to the CRUD api",
   });
 });
+app.all("/", (req: Request, res: Response) => {
+  return res.status(200).send({
+    status: "Method Not Allowed",
+    msg: "The specified HTTP method is not allowed for this resource.",
+  });
+});
 
 app.use("/student", studentController);
 
