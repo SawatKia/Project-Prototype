@@ -1,34 +1,15 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Home.css'; 
+import Navbar from '../../component/NavBar';
 
 const Home = () => {
-    const navigate = useNavigate();
-
-    const navigateToLogin = () => {
-      navigate('/login');
-    };
-
-    // const navigateToRegister = () => {
-    //     navigate('/login');
-    //   };
-
   return (
-    <div className="bg-gradient-to-r from-primaryColor from-10% secondaryColor via-40% to-accentColor to-90% flex items-center justify-center h-screen">
-      <div className="backdrop-blur-xl bg-white/30 p-8 rounded shadow-md">
-        <h1 className="text-3xl font-bold mb-4">Welcome to Wealth Track Website</h1>
-        
-        <div className="mt-6 flex justify-center">
-          <button 
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" 
-            onClick={navigateToLogin}
-            >
-            Log In
-          </button>
-        
-          <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-            Register
-          </button>
+    <div className="flex flex-col h-screen">
+      <Navbar />    
+      <div className="home-bg-class bg-cover flex-1 flex items-center justify-start p-8">
+        <div >
+          <h1 className="text-3xl text-gray-900 font-bold mb-4">Welcome to Wealth Track !</h1>
+          <p>Development of web applications  for analyzing personal assets and investments.</p>
         </div>
       </div>
     </div>
