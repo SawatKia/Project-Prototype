@@ -1,0 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.custom-bg-class{
+  background-image: url(../../image/financial_bg.jpg);
+}
