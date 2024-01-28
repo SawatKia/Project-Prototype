@@ -25,7 +25,7 @@ router.post("/create", async (req: Request, res: Response) => {
   } catch (error: unknown) {
     statusCode = 500;
     statusLabel = "Error";
-    statusMessage = "An unexpected error occurred.";
+    statusMessage = "An unexpected error occurred while creating student";
     if (error instanceof Error) {
       statusMessage = error.message;
     }
@@ -53,7 +53,7 @@ router.get("/get/all", async (req: Request, res: Response) => {
   } catch (error: unknown) {
     statusCode = 500;
     statusLabel = "Error";
-    statusMessage = "An unexpected error occurred.";
+    statusMessage = "An unexpected error occurred while retrieving students";
 
     if (error instanceof Error) {
       if (error.message == "No students found") {
@@ -86,7 +86,7 @@ router.get("/get/id/:id", async (req: Request, res: Response) => {
   } catch (error: unknown) {
     statusCode = 500;
     statusLabel = "Error";
-    statusMessage = "An unexpected error occurred.";
+    statusMessage = "An unexpected error occurred while retrieving student";
     if (error instanceof Error) {
       if (error.message == "No student Found") {
         statusCode = 204;
@@ -117,7 +117,7 @@ router.get("/get/name/:name", async (req: Request, res: Response) => {
   } catch (error: unknown) {
     statusCode = 500;
     statusLabel = "Error";
-    statusMessage = "An unexpected error occurred.";
+    statusMessage = "An unexpected error occurred while retrieving the student";
     if (error instanceof Error) {
       if (error.message == "No student Found") {
         statusCode = 204;
@@ -131,9 +131,37 @@ router.get("/get/name/:name", async (req: Request, res: Response) => {
     });
   }
 });
-// todo check error response for each method in the Postman
-// router.patch("/update/:id", async (req: Request, res: Response) => {
-// });
+
+router.patch("/update/:id", async (req: Request, res: Response) => {
+  let statusCode = 200;
+  let statusLabel = "Updated";
+  let statusMessage = `Student id ${req.params.name} has been updated successfully`;
+  try {
+    const updatedStudent = await StudentModel.updateStudent(req.params.id, req.body);
+    return res.status(statusCode).send({
+      status: statusLabel,
+      messsage: {
+        message: statusMessage,
+        data: updatedStudent,
+      },
+    });
+  } catch (error : unknown) {
+    statusCode = 500;
+    statusLabel = "Error";
+    statusMessage = "An unexpected error occurred while updating student.";
+    if (error instanceof Error) {
+      if (error.message == "No student found") {
+        statusCode = 404;
+        statusLabel = "not found";
+        statusMessage = error.message + ` with id ${req.params.id}`;
+      }
+    }
+    return res.status(statusCode).send({
+      status: statusLabel,
+      message: statusMessage,
+    });
+  }
+});
 
 // router.put("/update/:id", async (req: Request, res: Response) => {
 // });

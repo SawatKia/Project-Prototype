@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 // ============================ configuration =====================================
 import config from "../config/config";
@@ -28,9 +29,10 @@ class StudentModel {
  */
   async createStudent(student: Student): Promise<Student> {
     const date = Date.now();
+    const lowerCaseName = student.name.toLowerCase();
     const data = {
       id: date,
-      name: student.name,
+      name: lowerCaseName,
       mobile: student.mobile,
       address: student.address,
     };
@@ -100,7 +102,7 @@ class StudentModel {
         address: response.address,
       };
     } catch (error: any) {
-      throw new Error(error.message || `Failed to get student ID: ${id}`);
+      throw new Error(error.message);
     }
   }
 
@@ -112,65 +114,70 @@ class StudentModel {
  * @return {Promise<Student | null>} A promise that resolves to the retrieved student or null if not found.
  * @throws {Error} Throws an error if there's an issue fetching the data or if no matching student is found.
  */
-  async getStudentByName(name: string): Promise<Student | null> {
+  async getStudentByName(name: string): Promise<Student[]> {
+    const lowerCaseName = name.toLowerCase();
     const table = this.db.collection("students");
+    const matchingStudents: Student[] = [];
     try {
-      // Use where clause to filter by name
-      const querySnapshot = await table.where("name", "==", name).get();
+      // Use where clause to filter by case-insensitive partial name match
+      const querySnapshot = await table
+        .where("name", ">=", lowerCaseName)
+        .where("name", "<=", lowerCaseName + "\uf8ff")
+        .get();
       if (querySnapshot.empty) {
-        throw new Error("No student found");
+        // Return an empty array if no students are found
+        return matchingStudents;
       }
-      // Assume there's only one student with the given name
-      const studentData = querySnapshot.docs[0].data();
-      if (!studentData) {
-        throw new Error("Student data is undefined.");
-      }
-      return {
-        id: studentData.id,
-        name: studentData.name,
-        mobile: studentData.mobile,
-        address: studentData.address,
-      };
+      // Loop through all documents in the querySnapshot
+      querySnapshot.forEach((doc) => {
+        const studentData = doc.data();
+        if (studentData) {
+          matchingStudents.push({
+            id: studentData.id,
+            name: studentData.name,
+            mobile: studentData.mobile,
+            address: studentData.address,
+          });
+        }
+      });
+      return matchingStudents;
     } catch (error: any) {
-      throw new Error(error.message ||`Failed to get the student by name: ${name}`);
+      throw new Error(error.message || `Failed to get students by name: ${name}`);
     }
   }
+
   /**
  * Update a student in the database.
  *
  * @async
  * @param {string} id - The ID of the student to update.
- * @param {Student} student - The updated student information.
+ * @param {Partial<Student>} studentUpdate - The updated student information.
  * @return {Promise<Student>} A promise that resolves to the updated student.
  * @throws {Error} Throws an error if there's an issue updating the student, if no matching ID is found, or if the document is not updated.
  */
-  async updateStudent(id: string, student: Student): Promise<Student> {
-    try {
-      // Check if the document exists before attempting to update
-      const existingDoc = await this.db.collection("students").doc(id).get();
-      if (!existingDoc.exists) {
-        throw new Error(`No student found with ID: ${id}`);
-      }
-      const reqDoc = this.db.collection("students").doc(id);
-      const updateResult = await reqDoc.update({
-        name: student.name,
-        mobile: student.mobile,
-        address: student.address,
-      });
-      // Check if the document was updated successfully
-      if (updateResult.writeTime === null) {
-        throw new Error("updating incomplete");
-      }
-      return {
-        id: parseInt(id),
-        name: student.name,
-        mobile: student.mobile,
-        address: student.address,
-      };
-    } catch (error: any) {
-      throw new Error(error.message || "Failed to update the student.");
+  async updateStudent(id: string, studentUpdate: Partial<Student>): Promise<Student> {
+    // Fetch existing student data from the database
+    const studentRef = this.db.collection("students").doc(id);
+    const studentDoc = await studentRef.get();
+    if (!studentDoc.exists) {
+      throw new Error("No student found");
     }
+    const studentData = studentDoc.data() as Student;
+    // merrge updates to the existing data
+    const updatedData = {...studentData, ...studentUpdate};
+
+    // Update the student in the database
+    await this.db.collection("students").doc(id).update(updatedData);
+
+    // Return the updated student data
+    return {
+      id: parseInt(id),
+      name: updatedData.name,
+      mobile: updatedData.mobile,
+      address: updatedData.address,
+    };
   }
+
   /**
  * Delete a student from the database.
  *
