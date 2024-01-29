@@ -74,7 +74,7 @@ class StudentModel {
       }
       return allStudents;
     } catch (error: any) {
-      throw new Error(error.message || "Failed to fetch all student.");
+      throw new Error(error.message || "Failed to get all student.");
     }
   }
   /**
@@ -143,7 +143,7 @@ class StudentModel {
       });
       return matchingStudents;
     } catch (error: any) {
-      throw new Error(error.message || `Failed to get students by name: ${name}`);
+      throw new Error(error.message || "Failed to get students");
     }
   }
 
@@ -187,7 +187,7 @@ class StudentModel {
       // Check if the document exists before attempting to delete
       const existingDoc = await this.db.collection("students").doc(id).get();
       if (!existingDoc.exists) {
-        throw new Error(`No student found with ID: ${id}`);
+        throw new Error("No student found");
       }
       const reqDoc = this.db.collection("students").doc(id);
       await reqDoc.delete();
@@ -195,6 +195,35 @@ class StudentModel {
       return true;
     } catch (error: any) {
       throw new Error(error.message || "Failed to delete the student.");
+    }
+  }
+
+  /**
+ * Delete all students from the database.
+ *
+ * @async
+ * @return {Promise<boolean>} A promise that resolves to true if all students are successfully deleted, otherwise false.
+ * @throws {Error} Throws an error if there's an issue deleting the students.
+ */
+  async deleteAllStudents(): Promise<boolean> {
+    try {
+    // Fetch all student documents
+      const allStudentsSnapshot = await this.db.collection("students").get();
+      // Check if there are any students to delete
+      if (allStudentsSnapshot.empty) {
+      // Return false if there are no students to delete
+        return false;
+      }
+      // Delete each student document
+      const deletePromises = allStudentsSnapshot.docs.map(async (doc) => {
+        await doc.ref.delete();
+      });
+      // Wait for all delete operations to complete
+      await Promise.all(deletePromises);
+      // Return true to indicate successful deletion of all students
+      return true;
+    } catch (error: any) {
+      throw new Error(error.message || "Failed to delete all students.");
     }
   }
 }

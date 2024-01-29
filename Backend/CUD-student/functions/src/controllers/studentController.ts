@@ -133,7 +133,7 @@ router.get("/get/name/:name", async (req: Request, res: Response) => {
   }
 });
 
-router.patch("/update/:id", async (req: Request, res: Response) => {
+router.patch("/update/id/:id", async (req: Request, res: Response) => {
   let statusCode = 200;
   let statusLabel = "Updated";
   let statusMessage = `Student id ${req.params.id} has been updated successfully, this is the student after updated`;
@@ -164,7 +164,7 @@ router.patch("/update/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.put("/update/:id", async (req: Request, res: Response) => {
+router.put("/update/id/:id", async (req: Request, res: Response) => {
   let statusCode = 200;
   let statusLabel = "Updated";
   let statusMessage = `Student id ${req.params.name} has been updated successfully`;
@@ -217,11 +217,80 @@ router.put("/update/:id", async (req: Request, res: Response) => {
 });
 
 
-// router.delete("/delete/:id", async (req: Request, res: Response) => {
-// });
+router.delete("/delete/id/:id", async (req: Request, res: Response) => {
+  let statusCode = 200;
+  let statusLabel = "Updated";
+  let statusMessage = `Student id ${req.params.name} has been updated successfully`;
+  try {
+    const isdeleted = await StudentModel.deleteStudent(req.params.id);
+    if (isdeleted) {
+      statusLabel = "Deleted";
+    }
+    statusMessage = `Student ${req.params.id} has been deleted successfully`;
+    return res.status(statusCode).send({
+      status: statusLabel,
+      message: statusMessage,
+    });
+  } catch (error: unknown) {
+    statusCode = 500;
+    statusLabel = "Error";
+    statusMessage = "An unexpected error occurred while deleting student.";
+    if (error instanceof Error) {
+      if (error.message == "No student found") {
+        statusCode = 404;
+        statusLabel = "Not Found";
+        statusMessage = error.message + ` with id ${req.params.id}`;
+      }
+    }
+    return res.status(statusCode).send({
+      status: statusLabel,
+      message: statusMessage,
+    });
+  }
+});
 
-// router.delete("/delete/all", async (req: Request, res: Response) => {
-// });
+router.delete("/delete/all", async (req: Request, res: Response) => {
+  let statusCode = 200;
+  let statusLabel = "Updated";
+  let statusMessage = "All students have been deleted successfully";
+  try {
+    // Check for the custom header in the request
+    const deleteAllHeader = req.headers["x-delete-all-students"];
+    if (!deleteAllHeader || deleteAllHeader !== "true") {
+      statusCode = 403; // Forbidden
+      statusLabel = "Forbidden";
+      statusMessage = "Deleting all students is not allowed without proper authorization.";
+    } else {
+      // Proceed with deletion
+      const isDeleted = await StudentModel.deleteAllStudents();
+
+      if (!isDeleted) {
+        statusCode = 404;
+        statusLabel = "Not Found";
+        statusMessage = "No students found to delete.";
+      }
+    }
+    return res.status(statusCode).send({
+      status: statusLabel,
+      message: statusMessage,
+    });
+  } catch (error: unknown) {
+    statusCode = 500;
+    statusLabel = "Error";
+    statusMessage = "An unexpected error occurred while deleting students.";
+    if (error instanceof Error) {
+      statusMessage = error.message;
+      if (error.message === "No student found") {
+        statusCode = 404;
+        statusLabel = "Not Found";
+      }
+    }
+    return res.status(statusCode).send({
+      status: statusLabel,
+      message: statusMessage,
+    });
+  }
+});
 
 
 // Handle 405 Method Not Allowed for routes other than GET
