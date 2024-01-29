@@ -4,6 +4,7 @@ import {Request, Response, Router} from "express";
 
 // =================== configuration ===================
 import StudentModel from "../model/studentModel";
+import {Student} from "../interface/Student";
 // eslint-disable-next-line new-cap
 const router = Router();
 
@@ -135,7 +136,7 @@ router.get("/get/name/:name", async (req: Request, res: Response) => {
 router.patch("/update/:id", async (req: Request, res: Response) => {
   let statusCode = 200;
   let statusLabel = "Updated";
-  let statusMessage = `Student id ${req.params.name} has been updated successfully`;
+  let statusMessage = `Student id ${req.params.id} has been updated successfully, this is the student after updated`;
   try {
     const updatedStudent = await StudentModel.updateStudent(req.params.id, req.body);
     return res.status(statusCode).send({
@@ -163,8 +164,58 @@ router.patch("/update/:id", async (req: Request, res: Response) => {
   }
 });
 
-// router.put("/update/:id", async (req: Request, res: Response) => {
-// });
+router.put("/update/:id", async (req: Request, res: Response) => {
+  let statusCode = 200;
+  let statusLabel = "Updated";
+  let statusMessage = `Student id ${req.params.name} has been updated successfully`;
+  const validateStudentType = (object: any): object is Student => (
+    typeof object === "object" &&
+    object !== null &&
+    "id" in object &&
+    "name" in object &&
+    "mobile" in object &&
+    "address" in object &&
+    Object.keys(object).length === 4 // Ensure there are no extra fields
+  );
+
+  try {
+    // Check if req.body is of type Student
+    if (!validateStudentType(req.body)) {
+      throw new Error("Invalid student data. Ensure all required fields are provided.");
+    }
+
+    const updatedStudent = await StudentModel.updateStudent(req.params.id, req.body);
+    return res.status(statusCode).send({
+      status: statusLabel,
+      message: {
+        message: statusMessage,
+        data: updatedStudent,
+      },
+    });
+  } catch (error: unknown) {
+    // Handle errors
+    statusCode = 500;
+    statusLabel = "Error";
+    statusMessage = "An unexpected error occurred while updating student.";
+
+    if (error instanceof Error) {
+      if (error.message === "No student found") {
+        statusCode = 404;
+        statusLabel = "Not Found";
+        statusMessage = error.message + ` with id ${req.params.id}`;
+      } else if (error.message === "Invalid student data. Ensure all required fields are provided.") {
+        statusCode = 400;
+        statusMessage = error.message;
+      }
+    }
+
+    return res.status(statusCode).send({
+      status: statusLabel,
+      message: statusMessage,
+    });
+  }
+});
+
 
 // router.delete("/delete/:id", async (req: Request, res: Response) => {
 // });
@@ -177,13 +228,10 @@ router.patch("/update/:id", async (req: Request, res: Response) => {
 const handleMethodNotAllowed = (req: Request, res: Response) => {
   return res.status(405).send({
     status: "Method Not Allowed",
-    msg: "The specified HTTP method is not allowed for this resource.",
+    meassage: "The specified HTTP method is not allowed for this resource.",
   });
 };
-router.all("/create", handleMethodNotAllowed);
-router.all("/get/:id", handleMethodNotAllowed);
-router.all("/get/all", handleMethodNotAllowed);
-router.all("/update/:id", handleMethodNotAllowed);
-router.all("/delete/:id", handleMethodNotAllowed);
-router.all("/delete/all", handleMethodNotAllowed);
+router.use((req: Request, res: Response) => {
+  handleMethodNotAllowed(req, res);
+});
 export default router;

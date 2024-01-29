@@ -2,12 +2,13 @@
 /* eslint-disable max-len */
 // ============================ configuration =====================================
 import config from "../config/config";
-interface Student {
-  id: number;
-  name: string;
-  mobile: number;
-  address: string;
-}
+import {Student} from "../interface/Student";
+// interface Student {
+//   id: number;
+//   name: string;
+//   mobile: number;
+//   address: string;
+// }
 /**
  * Represents a model for managing student data.
  */
@@ -164,18 +165,13 @@ class StudentModel {
     }
     const studentData = studentDoc.data() as Student;
     // merrge updates to the existing data
-    const updatedData = {...studentData, ...studentUpdate};
+    const dataToUpdate = {...studentData, ...studentUpdate};
 
     // Update the student in the database
-    await this.db.collection("students").doc(id).update(updatedData);
-
+    await this.db.collection("students").doc(id).update(dataToUpdate);
+    const updatedStudent = await this.getStudentById(id) as Student;
     // Return the updated student data
-    return {
-      id: parseInt(id),
-      name: updatedData.name,
-      mobile: updatedData.mobile,
-      address: updatedData.address,
-    };
+    return updatedStudent;
   }
 
   /**
@@ -204,3 +200,4 @@ class StudentModel {
 }
 
 export default new StudentModel();
+
