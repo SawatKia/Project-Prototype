@@ -5,6 +5,7 @@ import {Request, Response} from "express";
 import * as cors from "cors";
 // =================== configuration ===================
 import studentController from "./controllers/studentController";
+import stockController from "./controllers/stocksController";
 const app = express();
 
 app.use(cors({
@@ -25,6 +26,7 @@ app.all("/", (req: Request, res: Response) => {
 });
 
 app.use("/student", studentController);
+app.use("/stock", stockController);
 
 exports.crudApi = functions.https.onRequest(app);
 

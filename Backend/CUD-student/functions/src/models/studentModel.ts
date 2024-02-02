@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 // ============================ configuration =====================================
 import config from "../config/config";
-import {Student} from "../interface/Student";
+import {Student} from "../interfaces/Student";
 // interface Student {
 //   id: number;
 //   name: string;

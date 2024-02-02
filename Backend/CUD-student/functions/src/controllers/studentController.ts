@@ -3,8 +3,8 @@
 import {Request, Response, Router} from "express";
 
 // =================== configuration ===================
-import StudentModel from "../model/studentModel";
-import {Student} from "../interface/Student";
+import StudentModel from "../models/studentModel";
+import {Student} from "../interfaces/Student";
 // eslint-disable-next-line new-cap
 const router = Router();
 
@@ -105,7 +105,7 @@ router.get("/get/id/:id", async (req: Request, res: Response) => {
 router.get("/get/name/:name", async (req: Request, res: Response) => {
   let statusCode = 200;
   let statusLabel = "Success";
-  let statusMessage = `Student id ${req.params.name} has been successfully retrieved`;
+  let statusMessage = `Student name "${req.params.name}" has been successfully retrieved`;
   try {
     const student = await StudentModel.getStudentByName(req.params.name);
     return res.status(statusCode).send({
@@ -216,7 +216,6 @@ router.put("/update/id/:id", async (req: Request, res: Response) => {
   }
 });
 
-
 router.delete("/delete/id/:id", async (req: Request, res: Response) => {
   let statusCode = 200;
   let statusLabel = "Updated";
@@ -251,7 +250,7 @@ router.delete("/delete/id/:id", async (req: Request, res: Response) => {
 
 router.delete("/delete/all", async (req: Request, res: Response) => {
   let statusCode = 200;
-  let statusLabel = "Updated";
+  let statusLabel = "Deleted";
   let statusMessage = "All students have been deleted successfully";
   try {
     // Check for the custom header in the request
