@@ -14,6 +14,8 @@ const Login = () => {
   const handleLogin = (event) => {
     event.preventDefault();
     //THIS IS STATIC VALUE OF USERNAME & PASSWORD
+    //**LoginPage: ADD forget pass & GG login
+    //**RegisPage: Name, Surname ,Birthday, email, pass, comfirm pass  
     const staticUsername = 'demo_user';
     const staticPassword = 'password';
     if (username === staticUsername && password === staticPassword) {
