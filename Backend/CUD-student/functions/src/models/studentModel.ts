@@ -33,6 +33,7 @@ class StudentModel {
     const lowerCaseName = student.name.toLowerCase();
     const data = {
       id: date,
+      // date created in bangkok time for real project
       name: lowerCaseName,
       mobile: student.mobile,
       address: student.address,

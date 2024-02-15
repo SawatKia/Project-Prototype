@@ -2,6 +2,7 @@
 // ============== Dependencies Setup ==============
 import {Request, Response, Router} from "express";
 
+
 // =================== configuration ===================
 import StudentModel from "../models/studentModel";
 import {Student} from "../interfaces/Student";
